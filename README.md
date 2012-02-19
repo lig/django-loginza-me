@@ -39,4 +39,6 @@ django-loginza-me is the Django app and auth backend for authenticating using ht
 
 ## Templates
 
-See http://loginza.ru/
+* Get widget code at [Loginza](http://loginza.ru/). 
+* Use `{{ LOGINZA_URL }}` as `token_url` widget parameter.
+* Use `{% url loginza-logout %}` for logout link url.
