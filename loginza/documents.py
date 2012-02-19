@@ -2,6 +2,9 @@ from django.contrib.auth.models import UNUSABLE_PASSWORD
 from mongoengine import Document, StringField, ReferenceField, DictField
 from mongoengine.django.auth import User
 
+# monkey patching User to be able to store long identities
+User.username.max_length = None
+
 
 __all__ = ['Identity']
 
@@ -20,16 +23,16 @@ class Identity(Document):
 
         identity_qs = cls.objects.filter(identity=loginza_response['identity'])
 
-        if identity_qs.exists():
+        if identity_qs.count():
             identity = identity_qs.get()
         else:
             user_qs = User.objects.filter(
                 username=loginza_response['identity'])
 
-            if user_qs.exists():
+            if user_qs.count():
                 user = user_qs.get()
             else:
-                user = User.objects.create_user(
+                user = User.create_user(
                     username=loginza_response['identity'],
                     password=UNUSABLE_PASSWORD,
                     email=loginza_response.get('email'))

@@ -38,7 +38,7 @@ class LoginzaBackend(object):
     def get_user(self, user_id):
         user = User.objects.get(pk=user_id)
         identity_qs = Identity.objects.filter(pk=user.username)
-        if identity_qs.exists():
+        if identity_qs.count():
             identity = Identity.objects.get(pk=user.username)
             user.info = identity.info
             return user
